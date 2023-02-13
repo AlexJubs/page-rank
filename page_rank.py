@@ -32,10 +32,9 @@ def page_rank(G, damping_factor, epsilon):
         for i in range(n):
             for j in range(n):
                 # for each incoming node onto i
-                if G[i][j] == 0: continue
+                if G[j][i] == 0: continue
                 new_pr[i] += (damping_factor * pr[j]) / outbound_link_counts[j]
         
-        # new_pr = [value + damping_value for value in new_pr]
         delta = sum(abs(pr[i] - new_pr[i]) for i in range(n))
         if delta <= epsilon:
             print(f"terminated after {num_iterations} iterations")
@@ -50,15 +49,16 @@ def pretty_print(M):
 
 def test_page_rank():
     # 1 on (i,j) indicates an outbound link from i to j
-    G = [[0, 1, 1, 0],
-         [1, 0, 0, 0],
-         [1, 0, 0, 1],
-         [0, 0, 1, 0]]
-    # 0 -> (1,2), 1 -> (0), 2 -> (0,3), 3 -> (2)
+    G = [[0, 1, 0, 0],
+         [1, 0, 1, 0],
+         [1, 1, 0, 1],
+         [1, 0, 0, 0]]
+    # 0 -> (1), 1 -> (0,2), 2 -> (0,1,3), 3 -> (0)
     print(f"testing pagerank with {len(G)} pages, with the following initial popularity scores:")
     pr = page_rank(G, damping_factor=0.85, epsilon=0.0001)
     print("Final PageRank scores (for pages 1-4):")
-    print(pr)
+    for i in range(len(pr)):
+        print(f"page {i} has score: {pr[i]}")
 
 if __name__ == "__main__":
     test_page_rank()
