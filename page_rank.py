@@ -32,7 +32,7 @@ def page_rank(G, damping_factor, epsilon):
         for i in range(n):
             for j in range(n):
                 # for each incoming node onto i
-                if G[j][i] != 1: continue
+                if G[i][j] == 0: continue
                 new_pr[i] += (damping_factor * pr[j]) / outbound_link_counts[j]
         
         # new_pr = [value + damping_value for value in new_pr]
